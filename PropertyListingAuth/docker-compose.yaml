@@ -1,0 +1,41 @@
+version: "3"
+services:
+  mongo-express:
+    image: mongo-express:0.54
+    container_name: mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mtaayetuadmin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: extractorGuru93
+      ME_CONFIG_BASICAUTH_USERNAME: mtaayetuadmin
+      ME_CONFIG_BASICAUTH_PASSWORD: extractorGuru93
+    networks:
+      - mtaamongonetwork
+
+  mongo:
+    image: mongo:4.4.6
+    container_name: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mtaayetuadmin
+      MONGO_INITDB_ROOT_PASSWORD: extractorGuru93
+      MONGO_INITDB_DATABASE: mongoauthdb
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    expose:
+      - 27017
+    networks:
+      - mtaamongonetwork
+
+networks:
+  mtaamongonetwork:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
